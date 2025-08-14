@@ -11,3 +11,4 @@ jobs:
     uses: ./.github/workflows/build-and-push.yml
     with:
         image-tag: asdf
+    secrets: inherit
