@@ -1,0 +1,12 @@
+name: helper-caller
+on: 
+    workflow_dispatch:
+
+# Need ID token write permission to use OIDC
+permissions:
+  id-token: write
+jobs:
+  call-build-and-push:
+    uses: ./.github/workflows/build-and-push.yml
+    with:
+        image-tag: asdf
