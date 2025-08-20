@@ -27,5 +27,5 @@ jobs:
             output-credentials: true
             output-env-credentials: false
             unset-current-credentials: true
-            use-existing-credentials: true
-            role-session-skip-tagging: true
+            use-existing-credentials: false
+            role-skip-session-tagging: true
