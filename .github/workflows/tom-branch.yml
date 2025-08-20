@@ -12,8 +12,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@6092b743408cc71497ede52295e24a6166e86cfb
         with:
-            role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-            aws-region: ${{ secrets.AWS_REGION }}
+            role-to-assume: arn:aws:iam::079984577328:role/cawsc-test-thingy
+            aws-region: us-east-1
       - name: Get Caller Identity
         run: |
           aws sts get-caller-identity
