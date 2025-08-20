@@ -14,6 +14,18 @@ jobs:
         with:
             role-to-assume: arn:aws:iam::079984577328:role/cawsc-test-thingy
             aws-region: us-east-1
+            disable-retry: true
       - name: Get Caller Identity
         run: |
           aws sts get-caller-identity
+      - name: Configure AWS Credentials again
+        uses: aws-actions/configure-aws-credentials@6092b743408cc71497ede52295e24a6166e86cfb
+        with:
+            role-to-assume: arn:aws:iam::079984577328:role/cawsc-test-thingy
+            aws-region: us-east-1
+            disable-retry: true
+            output-credentials: true
+            output-env-credentials: false
+            unset-current-credentials: true
+            use-existing-credentials: true
+            role-session-skip-tagging: true
