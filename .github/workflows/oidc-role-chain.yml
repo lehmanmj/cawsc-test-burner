@@ -22,3 +22,6 @@ jobs:
             aws-region: us-east-2
             role-to-assume: arn:aws:iam::884348119369:role/second-role-to-test
             role-chaining: true
+      - name: get caller identity
+        run: |
+          aws sts get-caller-identity
