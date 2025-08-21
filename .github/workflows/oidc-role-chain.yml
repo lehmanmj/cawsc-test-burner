@@ -17,7 +17,7 @@ jobs:
         run: |
           aws sts get-caller-identity
       - name: assume second role
-        uses: aws/actions/configure-aws-credentials@v4.3.1
+        uses: aws-actions/configure-aws-credentials@v4.3.1
         with:
             aws-region: us-east-2
             role-to-assume: arn:aws:iam::884348119369:role/second-role-to-test
