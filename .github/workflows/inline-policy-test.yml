@@ -8,34 +8,22 @@ jobs:
   run_job_with_aws:
     runs-on: ubuntu-latest
     steps:
-      - name: make sure inline-policy can't expand role's policy
-        uses: aws-actions/configure-aws-credentials@v4.3.1
-        with:
-            aws-region: us-east-2
-            role-to-assume: arn:aws:iam::884348119369:role/cawsc-inline-policy-noperms
-            inline-session-policy: '{"Version":"2012-10-17","Statement":[{"Sid":"Stmt1","Effect":"Allow","Action":"s3:List*","Resource":"*"}]}'
-      - name: list buckets
-        continue-on-error: true
-        run: |
-          aws s3 ls
-      - name: see if role has policies it should
-        uses: aws-actions/configure-aws-credentials@v4.3.1
-        with:
-            aws-region: us-east-2
-            role-to-assume: arn:aws:iam::884348119369:role/cawsc-inline-policy-test
-      - name: list buckets again lol
-        run: |
-          aws s3 ls
-          aws s3 ls s3://lehmanmj-cawsc-test-1
-      - name: now scope it down
+      - name: scoped down policy
         uses: aws-actions/configure-aws-credentials@v4.3.1
         with: 
             aws-region: us-east-2
             role-to-assume: arn:aws:iam::884348119369:role/cawsc-inline-policy-test
             inline-session-policy: '{"Version":"2012-10-17","Statement":[{"Sid":"Stmt1","Effect":"Allow","Action":"s3:ListAllMyBuckets","Resource":"*"}]}'
-      - name: try list buckets again
+      - name: list buckets
         run: |
           aws s3 ls
+      - name: try to list bucket contents
+        id: bucketContentsStep
+        continue-on-error: true
+        run: |
           aws s3 ls s3://lehmanmj-cawsc-test-1
+      - name: fail if last step succeeded
+        if: steps.bucketContentsStep.outcome == 'success'
+        run: exit 1
         
 
