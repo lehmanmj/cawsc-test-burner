@@ -14,4 +14,4 @@ jobs:
           - name: look at da env
             run: ls
           - name: run da proxy
-            run: ./proxy
+            run: ./proxy.go
