@@ -1,0 +1,17 @@
+name: http proxy test
+on: 
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    proxy-test:
+        runs-on: ubuntu-latest
+        steps:
+          - name: clone repo
+            uses: actions/checkout@v4
+          - name: look at da env
+            run: ls
+          - name: run da proxy
+            run: ./proxy
