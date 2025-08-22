@@ -1,0 +1,25 @@
+name: env var test
+on: 
+    workflow_dispatch:
+
+permissions:
+    id-token: write
+jobs:
+  run_job_with_aws:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4.3.1
+        with:
+            aws-region: us-east-1
+            role-to-assume: arn:aws:iam::884348119369:role/first-role-to-test
+      - name: Get Caller Identity
+        run: |
+          aws sts get-caller-identity
+
+  run_job_with_aws2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Caller Identity
+        run: |
+          aws sts get-caller-identity
