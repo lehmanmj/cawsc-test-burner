@@ -1,4 +1,4 @@
-name: inline policy test
+name: inline policy experiments
 on: 
     workflow_dispatch:
 
@@ -8,11 +8,12 @@ jobs:
   run_job_with_aws:
     runs-on: ubuntu-latest
     steps:
-      - name: Configure AWS credentials
+      - name: make sure inline-policy can't expand role's policy
         uses: aws-actions/configure-aws-credentials@v4.3.1
         with:
             aws-region: us-east-2
-            role-to-assume: arn:aws:iam::884348119369:role/cawsc-inline-policy-test
+            role-to-assume: arn:aws:iam::884348119369:role/cawsc-inline-policy-noperms
+            inline-session-policy: '{"Version":"2012-10-17","Statement":[{"Sid":"Stmt1","Effect":"Allow","Action":"s3:List*","Resource":"*"}]}'
       - name: list buckets
         continue-on-error: true
         run: |
