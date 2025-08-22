@@ -27,5 +27,15 @@ jobs:
         run: |
           aws s3 ls
           aws s3 ls s3://lehmanmj-cawsc-test-1
+      - name: now scope it down
+        uses: aws-action/configure-aws-credentials@v4.3.1
+        with: 
+            aws-region: us-east-2
+            role-to-assume: arn:aws:iam::884348119369:role/cawsc-inline-policy-test
+            inline-session-policy: '{"Version":"2012-10-17","Statement":[{"Sid":"Stmt1","Effect":"Allow","Action":"s3:ListAllMyBuckets","Resource":"*"}]}'
+      - name: try list buckets again
+        run: |
+          aws s3 ls
+          aws s3 ls s3://lehmanmj-cawsc-test-1
         
 
