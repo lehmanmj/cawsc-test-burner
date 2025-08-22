@@ -1,9 +1,11 @@
-name: env var test
+name: pr integ tests
 on: 
+    pull_request_target:
     workflow_dispatch:
 
 jobs:
   oidc_login:
+    if: ${{ github.event.pull_request.user.login == 'lehmanmj' && github.repository == 'lehmanmj/cawsc-test-burner' }}
     permissions: 
         id-token: write
     strategy: 
@@ -23,6 +25,7 @@ jobs:
           aws sts get-caller-identity
 
   static_assumeRole:
+    if: ${{ github.event.pull_request.user.login == 'lehmanmj' && github.repository == 'lehmanmj/cawsc-test-burner' }}
     strategy: 
         fail-fast: false
         matrix:
@@ -42,6 +45,7 @@ jobs:
           aws sts get-caller-identity
 
   role_chaining:
+    if: ${{ github.event.pull_request.user.login == 'lehmanmj' && github.repository == 'lehmanmj/cawsc-test-burner' }}
     permissions: 
         id-token: write
     strategy: 
@@ -70,6 +74,7 @@ jobs:
           aws sts get-caller-identity
 
   inline_policy:
+    if: ${{ github.event.pull_request.user.login == 'lehmanmj' && github.repository == 'lehmanmj/cawsc-test-burner' }}
     permissions: 
         id-token: write
     strategy: 
