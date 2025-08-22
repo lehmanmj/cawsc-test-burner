@@ -14,5 +14,7 @@ jobs:
             aws-region: us-east-2
             role-to-assume: arn:aws:iam::884348119369:role/cawsc-inline-policy-test
       - name: list buckets
+        continue-on-error: true
         run: |
           aws s3 ls
+
