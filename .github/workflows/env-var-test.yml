@@ -69,3 +69,31 @@ jobs:
       - name: get caller identity
         run: |
           aws sts get-caller-identity
+
+  inline_policy:
+    permissions: 
+        id-token: write
+    strategy: 
+        fail-fast: false
+        matrix:
+            os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    name: Inline Policy Test
+    steps:
+      - name: scoped down policy
+        uses: aws-actions/configure-aws-credentials@v4.3.1
+        with: 
+            aws-region: us-east-2
+            role-to-assume: arn:aws:iam::884348119369:role/cawsc-inline-policy-test
+            inline-session-policy: '{"Version":"2012-10-17","Statement":[{"Sid":"Stmt1","Effect":"Allow","Action":"s3:ListAllMyBuckets","Resource":"*"}]}'
+      - name: list buckets
+        run: |
+          aws s3 ls
+      - name: try to list bucket contents
+        id: bucketContentsStep
+        continue-on-error: true
+        run: |
+          aws s3 ls s3://lehmanmj-cawsc-test-1
+      - name: fail if last step succeeded
+        if: steps.bucketContentsStep.outcome == 'success'
+        run: exit 1
