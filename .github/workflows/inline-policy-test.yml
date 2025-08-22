@@ -13,6 +13,6 @@ jobs:
         with:
             aws-region: us-east-2
             role-to-assume: arn:aws:iam::884348119369:role/cawsc-inline-policy-test
-      - name: Get Caller Identity
+      - name: list buckets
         run: |
-          aws sts get-caller-identity
+          aws s3 ls
