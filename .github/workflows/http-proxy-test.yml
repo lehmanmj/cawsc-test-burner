@@ -26,3 +26,9 @@ jobs:
               http-proxy: http://127.0.0.1:9999
           - name: checkout logs 
             run: sudo cat whatever.txt
+          - name: check logs to see if successful call
+            run: grep -q "Request" whatever.txt && echo "FOO=true" >> $GITHUB_ENV || echo "FOO=false" >> $GITHUB_ENV
+          - name: fail job if bad call 
+            if: ${{ env.FOO }}
+            run: exit 1
+
