@@ -23,7 +23,7 @@ jobs:
             with:
               aws-region: us-east-1
               role-to-assume: arn:aws:iam::884348119369:role/first-role-to-test
-              http-proxy: http://127.0.0.1:9999
+              http-proxy: http://127.0.0.1:9998
           - name: checkout logs 
             run: sudo cat whatever.txt
           - name: check logs to see if successful call
