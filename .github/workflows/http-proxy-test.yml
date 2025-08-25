@@ -19,10 +19,6 @@ jobs:
             run: sudo tinyproxy -c tinyproxy.conf
           - name: hit da proxy
             run: http_proxy=127.0.0.1:9999 curl example.com
-          - name: see if whatever.txt exists
-            run: |
-              ls -a -l -t
-              pwd
           - name: look at whatever.txt
             run: sudo cat whatever.txt
           - name: hit da proxy again
