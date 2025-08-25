@@ -94,10 +94,42 @@ jobs:
         run: |
           aws s3 ls
       - name: try to list bucket contents
+        #NOTE: This step should fail. we don't want the role to have permission to see the bucket contents.
         id: bucketContentsStep
         continue-on-error: true
         run: |
           aws s3 ls s3://lehmanmj-cawsc-test-1
       - name: fail if last step succeeded
         if: steps.bucketContentsStep.outcome == 'success'
+        run: exit 1
+
+  proxy-test:
+    if: ${{ github.event.pull_request.user.login == 'lehmanmj' && github.repository == 'lehmanmj/cawsc-test-burner' }}
+    permissions:
+        id-token: write
+        contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone repo
+        uses: actions/checkout@v4
+      - name: install tinyproxy
+        run: |
+          sudo apt-get update
+          sudo apt-get install tinyproxy
+      - name: start tinyproxy
+        run: sudo tinyproxy -c tinyproxy.conf
+      - name: Configure AWS credentials
+        continue-on-error: true
+        uses: aws-actions/configure-aws-credentials@v4.3.1
+        with:
+            aws-region: us-east-1
+            role-to-assume: arn:aws:iam::884348119369:role/first-role-to-test
+            http-proxy: http://127.0.0.1:9999
+            retry-max-attempts: 4
+      - name: checkout logs 
+        run: sudo cat whatever.txt
+      - name: check logs to see if successful call
+        run: sudo grep -q "Request" whatever.txt && echo "FOO=1" >> $GITHUB_ENV || echo "FOO=0" >> $GITHUB_ENV
+      - name: fail job if bad call 
+        if: ${{ env.FOO != 1 }}
         run: exit 1

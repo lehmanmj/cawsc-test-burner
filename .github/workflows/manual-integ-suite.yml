@@ -89,6 +89,7 @@ jobs:
         run: |
           aws s3 ls
       - name: try to list bucket contents
+      #NOTE: This step should fail. we don't want the role to have permission to see the bucket contents.
         id: bucketContentsStep
         continue-on-error: true
         run: |
