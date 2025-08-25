@@ -19,6 +19,7 @@ jobs:
           - name: start tinyproxy
             run: sudo tinyproxy -c tinyproxy.conf
           - name: Configure AWS credentials
+            continue-on-error: true
             uses: aws-actions/configure-aws-credentials@v4.3.1
             with:
               aws-region: us-east-1
