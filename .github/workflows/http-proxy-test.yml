@@ -29,6 +29,6 @@ jobs:
           - name: check logs to see if successful call
             run: sudo grep -q "Request" whatever.txt && echo "FOO=true" >> $GITHUB_ENV || echo "FOO=false" >> $GITHUB_ENV
           - name: fail job if bad call 
-            if: ${{ env.FOO }} != "true"
+            if: ! ${{ env.FOO }}
             run: exit 1
 
