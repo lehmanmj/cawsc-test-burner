@@ -23,3 +23,9 @@ jobs:
             run: |
               ls -a -l -t
               pwd
+          - name: look at whatever.txt
+            run: cat whatever.txt
+          - name: hit da proxy again
+            run: http_proxy=127.0.0.1:8888 curl google.com
+          - name: checkout logs again
+            run: cat whatever.txt
