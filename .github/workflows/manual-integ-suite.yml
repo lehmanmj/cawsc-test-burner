@@ -1,0 +1,128 @@
+name: manual integ suite
+on: 
+    workflow_dispatch:
+
+jobs:
+  oidc_login:
+    permissions: 
+        id-token: write
+    strategy: 
+        fail-fast: false
+        matrix:
+            os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    name: OIDC login test
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4.3.1
+        with:
+            aws-region: us-east-1
+            role-to-assume: arn:aws:iam::884348119369:role/first-role-to-test
+      - name: Get Caller Identity
+        run: |
+          aws sts get-caller-identity
+
+  static_assumeRole:
+    strategy: 
+        fail-fast: false
+        matrix:
+            os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    name: Static IAM creds test
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4.3.1
+        with:
+            aws-region: us-east-1
+            aws-access-key-id: ${{ secrets.USER_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.USER_SECRET_ACCESS_KEY }}
+            role-to-assume: assume-role-static-creds
+      - name: Get Caller Identity
+        run: |
+          aws sts get-caller-identity
+
+  role_chaining:
+    permissions: 
+        id-token: write
+    strategy: 
+        fail-fast: false
+        matrix:
+            os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    name: Existing creds test
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4.3.1
+        with:
+            aws-region: us-east-1
+            role-to-assume: arn:aws:iam::884348119369:role/first-role-to-test
+      - name: Get Caller Identity
+        run: |
+          aws sts get-caller-identity
+      - name: assume second role
+        uses: aws-actions/configure-aws-credentials@v4.3.1
+        with:
+            aws-region: us-east-2
+            role-to-assume: arn:aws:iam::884348119369:role/second-role-to-test
+            role-chaining: true
+      - name: get caller identity
+        run: |
+          aws sts get-caller-identity
+
+  inline_policy:
+    permissions: 
+        id-token: write
+    strategy: 
+        fail-fast: false
+        matrix:
+            os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    name: Inline Policy Test
+    steps:
+      - name: scoped down policy
+        uses: aws-actions/configure-aws-credentials@v4.3.1
+        with: 
+            aws-region: us-east-2
+            role-to-assume: arn:aws:iam::884348119369:role/cawsc-inline-policy-test
+            inline-session-policy: '{"Version":"2012-10-17","Statement":[{"Sid":"Stmt1","Effect":"Allow","Action":"s3:ListAllMyBuckets","Resource":"*"}]}'
+      - name: list buckets
+        run: |
+          aws s3 ls
+      - name: try to list bucket contents
+        id: bucketContentsStep
+        continue-on-error: true
+        run: |
+          aws s3 ls s3://lehmanmj-cawsc-test-1
+      - name: fail if last step succeeded
+        if: steps.bucketContentsStep.outcome == 'success'
+        run: exit 1
+
+  proxy-test:
+    permissions:
+        id-token: write
+        contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone repo
+        uses: actions/checkout@v4
+      - name: install tinyproxy
+        run: |
+          sudo apt-get update
+          sudo apt-get install tinyproxy
+      - name: start tinyproxy
+        run: sudo tinyproxy -c tinyproxy.conf
+      - name: Configure AWS credentials
+        continue-on-error: true
+        uses: aws-actions/configure-aws-credentials@v4.3.1
+        with:
+            aws-region: us-east-1
+            role-to-assume: arn:aws:iam::884348119369:role/first-role-to-test
+            http-proxy: http://127.0.0.1:9999
+            retry-max-attempts: 4
+      - name: checkout logs 
+        run: sudo cat whatever.txt
+      - name: check logs to see if successful call
+        run: sudo grep -q "Request" whatever.txt && echo "FOO=1" >> $GITHUB_ENV || echo "FOO=0" >> $GITHUB_ENV
+      - name: fail job if bad call 
+        if: ${{ env.FOO != 1 }}
+        run: exit 1
