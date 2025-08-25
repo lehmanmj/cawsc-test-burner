@@ -19,3 +19,5 @@ jobs:
             run: sudo tinyproxy -c tinyproxy.conf
           - name: hit da proxy
             run: http_proxy=127.0.0.1:8888 curl example.com
+          - name: see if whatever.txt exists
+            run: ls -a -l -t
