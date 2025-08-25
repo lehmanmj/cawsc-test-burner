@@ -11,7 +11,7 @@ jobs:
         steps:
           - name: clone repo
             uses: actions/checkout@v4
-          - name: look at da env
-            run: ls
-          - name: run da proxy
-            run: ./proxy.go
+          - name: install tinyproxy
+            run: |
+              sudo apt-get update
+              sudo apt-get install tinyproxy
