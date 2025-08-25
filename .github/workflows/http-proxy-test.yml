@@ -15,3 +15,7 @@ jobs:
             run: |
               sudo apt-get update
               sudo apt-get install tinyproxy
+          - name: start tinyproxy
+            run: tinyproxy -d -c tinyproxy.conf
+          - name: hit da proxy
+            run: http_proxy=127.0.0.1:8888 curl example.com
