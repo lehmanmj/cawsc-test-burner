@@ -18,7 +18,7 @@ jobs:
           - name: start tinyproxy
             run: sudo tinyproxy -c tinyproxy.conf
           - name: hit da proxy
-            run: http_proxy=127.0.0.1:8888 curl example.com
+            run: http_proxy=127.0.0.1:9999 curl example.com
           - name: see if whatever.txt exists
             run: |
               ls -a -l -t
@@ -26,6 +26,6 @@ jobs:
           - name: look at whatever.txt
             run: sudo cat whatever.txt
           - name: hit da proxy again
-            run: http_proxy=127.0.0.1:8888 curl google.com
+            run: http_proxy=127.0.0.1:9999 curl google.com
           - name: checkout logs again
             run: sudo cat whatever.txt
