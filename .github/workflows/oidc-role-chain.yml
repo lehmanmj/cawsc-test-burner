@@ -12,7 +12,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4.3.1
         with:
             aws-region: us-east-1
-            role-to-assume: arn:aws:iam::884348119369:role/first-role-to-test
+            role-to-assume: arn:aws:iam::884348119369:role/GitHub
       - name: Get Caller Identity
         run: |
           aws sts get-caller-identity
