@@ -25,7 +25,7 @@ jobs:
               uses: aws-actions/configure-aws-credentials@v4.3.1
               with:
                 aws-region: us-east-1
-                role-to-assume: arn:aws:iam::884348119369:role/assumed-by-eks
+                role-to-assume: arn:aws:iam::884348119369:role/role-for-eks-to-assume
                 web-identity-token-file: output_file.txt
                 retry-max-attempts: 4
             - name: verify creds
