@@ -16,7 +16,7 @@ jobs:
                 aws-region: us-east-1
                 role-to-assume: arn:aws:iam::884348119369:role/eks-tester-role
             - name: try to get token
-              run: aws eks get-token --cluster-name serious-classical-dinosaur | jq -r '.status' > output_file.txt
+              run: aws eks get-token --cluster-name serious-classical-dinosaur | jq -r '.status.token' > output_file.txt
             - name: look around
               run: ls
             - name: inspect da file
