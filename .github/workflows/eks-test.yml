@@ -1,0 +1,17 @@
+name: eks test
+on:
+    workflow_dispatch
+
+jobs:
+    eks_test:
+        permissions:
+            id-token: write
+        runs-on: ubuntu-latest
+        steps:
+            - name: assume role
+              uses: aws-actions/configure-aws-credentials@v4.3.1
+              with:
+                aws-region: us-east-1
+                role-to-assume: arn:aws:iam::884348119369:role/eks-tester-role
+            - name: try to get token
+              run: aws eks get-token --cluster-name serious-classical-dinosaur
