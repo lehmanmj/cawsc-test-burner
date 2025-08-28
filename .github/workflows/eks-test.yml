@@ -21,4 +21,11 @@ jobs:
               run: ls
             - name: inspect da file
               run: cat output_file.txt
-            
+            - name: try assume from file
+              uses: aws-actions/configure-aws-credentials@v4.3.1
+              with:
+                aws-region: us-east-1
+                role-to-assume: arn:aws:iam::884348119369:role/assumed-by-eks
+                web-identity-token-file: output_file.txt
+            - name: verify creds
+              run: aws sts get-caller-identity
