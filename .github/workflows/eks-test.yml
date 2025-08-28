@@ -27,5 +27,6 @@ jobs:
                 aws-region: us-east-1
                 role-to-assume: arn:aws:iam::884348119369:role/assumed-by-eks
                 web-identity-token-file: output_file.txt
+                retry-max-attempts: 4
             - name: verify creds
               run: aws sts get-caller-identity
