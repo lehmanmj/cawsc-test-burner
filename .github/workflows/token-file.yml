@@ -19,5 +19,6 @@ jobs:
                 aws-region: us-east-1
                 role-to-assume: arn:aws:iam::884348119369:role/first-role-to-test
                 web-identity-token-file: token.txt
+                retry-max-attempts: 4
             - name: check creds
               run: aws sts get-caller-identity
