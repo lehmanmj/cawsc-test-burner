@@ -93,7 +93,7 @@ jobs:
         id: bucketContentsStep
         continue-on-error: true
         run: |
-          aws s3 ls s3://lehmanmj-cawsc-test-1
+          aws s3 ls s3://${{ secrets.INLINE_BUCKET_NAME }}
       - name: fail if last step succeeded
         if: steps.bucketContentsStep.outcome == 'success'
         run: exit 1
