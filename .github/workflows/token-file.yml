@@ -1,0 +1,16 @@
+name: token file test
+on:
+    workflow_dispatch
+
+jobs:
+    token-file-test:
+        permissions:
+            contents: read
+        runs-on: ubuntu-latest
+        steps:
+            - name: get stuff
+              uses: actions/checkout@v4
+            - name: look around
+              run: ls
+            - name: run the thing
+              run: node fetch-token.js
