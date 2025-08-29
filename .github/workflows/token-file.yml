@@ -15,3 +15,7 @@ jobs:
               run: ls
             - name: run the thing
               run: node fetch-token.js
+            - name: look again
+              run: ls
+            - name: inspect da file
+              run: cat token.txt
