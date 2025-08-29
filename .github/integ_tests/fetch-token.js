@@ -7,6 +7,6 @@ async function getIDTokenAction() {
 }
 let whatever = await getIDTokenAction();
 
-fs.writeFile("token.txt", whatever, (err) => {
+fs.writeFile(".github/integ_tests/token.txt", whatever, (err) => {
   if (err) throw err;
 });
