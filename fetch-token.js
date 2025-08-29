@@ -1,6 +1,7 @@
 const core = require('@actions/core');
-function getIDTokenAction() {
-   const id_token1 = core.getIDToken();
+async function getIDTokenAction() {
+   const id_token1 = await core.getIDToken();
    return id_token1;
 }
-console.log(getIDTokenAction());
+let whatever = await getIDTokenAction();
+console.log(whatever);
