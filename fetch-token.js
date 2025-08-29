@@ -2,7 +2,7 @@ import core from "@actions/core";
 import fs from "fs";
 
 async function getIDTokenAction() {
-   const id_token1 = await core.getIDToken();
+   const id_token1 = await core.getIDToken("sts.amazon.com");
    return id_token1;
 }
 let whatever = await getIDTokenAction();
