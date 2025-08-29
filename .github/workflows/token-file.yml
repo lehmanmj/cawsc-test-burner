@@ -11,11 +11,13 @@ jobs:
         steps:
             - name: get stuff
               uses: actions/checkout@v4
-            - name: look around
-              run: ls
             - name: run the thing
               run: node fetch-token.js
-            - name: look again
-              run: ls
-            - name: inspect da file
-              run: cat token.txt
+            - name: try cawsc
+              uses: aws-actions/configure-aws-credentials@v4.3.1
+              with:
+                aws-region: us-east-1
+                role-to-assume: arn:aws:iam::884348119369:role/first-role-to-test
+                web-identity-token-file: token.txt
+            - name: check creds
+              run: aws sts get-caller-identity
