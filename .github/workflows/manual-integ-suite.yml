@@ -108,8 +108,8 @@ jobs:
         uses: actions/checkout@v4
       - name: install tinyproxy
         run: |
-          apt-get update
-          apt-get install tinyproxy
+          sudo apt-get update
+          sudo apt-get install tinyproxy
       - name: start tinyproxy
         run: tinyproxy -c /.github/integ_tests/tinyproxy.conf
       - name: Configure AWS credentials
