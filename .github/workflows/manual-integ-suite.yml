@@ -108,8 +108,8 @@ jobs:
         uses: actions/checkout@v4
       - name: install tinyproxy
         run: |
-          sudo apt-get update
-          sudo apt-get install tinyproxy
+          apt-get update
+          apt-get install tinyproxy
       - name: start tinyproxy
         run: tinyproxy -c tinyproxy.conf
       - name: Configure AWS credentials
@@ -121,9 +121,9 @@ jobs:
             http-proxy: http://127.0.0.1:9999
             retry-max-attempts: 4
       - name: checkout logs 
-        run: sudo cat whatever.txt
+        run: cat whatever.txt
       - name: check logs to see if successful call
-        run: sudo grep -q "Request" whatever.txt && echo "FOO=1" >> $GITHUB_ENV || echo "FOO=0" >> $GITHUB_ENV
+        run: grep -q "Request" whatever.txt && echo "FOO=1" >> $GITHUB_ENV || echo "FOO=0" >> $GITHUB_ENV
       - name: fail job if bad call 
         if: ${{ env.FOO != 1 }}
         run: exit 1
