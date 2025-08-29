@@ -145,7 +145,6 @@ jobs:
               with:
                 script: |
                   const fs = require('fs');
-                  const core = require('@actions/core');
                   async function getIDTokenAction() {
                     const id_token = await core.getIDToken("sts.amazonaws.com");
                     return id_token;
