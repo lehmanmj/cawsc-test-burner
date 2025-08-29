@@ -110,8 +110,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install tinyproxy
+      - name: look at what exists
+        run: |
+          ls
+          ls .github
       - name: start tinyproxy
-        run: tinyproxy -c /.github/integ_tests/tinyproxy.conf
+        run: tinyproxy -c .github/integ_tests/tinyproxy.conf
       - name: Configure AWS credentials
         continue-on-error: true
         uses: aws-actions/configure-aws-credentials@v4.3.1
