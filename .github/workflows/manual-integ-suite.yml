@@ -150,7 +150,7 @@ jobs:
                     return id_token;
                   }
                   const idToken = await getIDTokenAction();
-                  await fs.writeFile(".github/integ_tests/integ_token.txt", idToken, (err) => {
+                  fs.writeFileSync(".github/integ_tests/token.txt", idToken, (err) => {
                     if (err) throw err;
                   });
             - name: try cawsc
