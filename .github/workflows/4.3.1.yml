@@ -3,8 +3,6 @@ on:
     workflow_dispatch:
 env:
   DEV_AWS_ROLE_ARN: arn:aws:iam::884348119369:role/first-role-to-test
-permissions:
-  id-token: write
 
 # Need ID token write permission to use OIDC
 jobs:
